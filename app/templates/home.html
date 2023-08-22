@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"></head>
+
+<style>
+
+    .strikeout{
+        text-decoration :line-through ;
+
+    }
+
+    a{
+        text-decoration :none ;
+    }
+    a:hover{
+        text-decoration :none ;
+
+    }
+</style>
+
+
+
+    <body>
+    <!-- Image and text -->
+    {% load static %}
+<nav class="navbar fixed-top navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+        <img src="{% static 'taskwiseLogonew.jpg' %}" width="30" height="30" class="d-inline-block align-top pr-1" alt="">
+        TaskWise
+    </a>
+    <h6 class="p-0 m-0 ml-auto pr-2 text-light" id="txt">{% if user.is_authenticated %}
+    {{user.get_username}}
+    {% else %}
+        User Unknown
+    {% endif %}</h6>
+    <button class="btn btn-outline-primary my-2 my-sm-0" id="logoutbtn">Logout</button>
+  </nav>
+    
+
+  <div class="container text">
+    <div class="row justify-content-md-center">
+        
+        <div class="col-lg mt-5 mb-4">
+            
+
+            <div class="card ml-auto mr-auto mt-4" style="width: 20rem;">
+                <div class="card-body text-center">
+                  <h5 class="card-title  d-inline">You have </h5> <h4 class="d-inline text-danger">{{finished}}</h4> <h5 class="d-inline">Incompleted Tasks</h5> 
+                  
+                </div>
+              </div>
+            
+            <form class=" mt-5" action="/" method="POST">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                <input required type="text" name="task" class="form-control" placeholder="Your Task" aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-success" type="submit" id="button-addon2">Add Task</button>
+              </div>
+          </form>
+</div>
+</div>
+
+          <div class="container">
+        {% if data %}
+            {% for d in data %}
+            <div class=" d-flex  rounded p-2 mb-3 border-left" style="-webkit-box-shadow: 4px 4px 6px -6px gray;
+            -moz-box-shadow: 0 4px 6px -6px #222;
+            box-shadow: 0 4px 6px -6px #222;"
+            
+            >
+               
+
+                   <a class="text-dark text-decoration-none" href="complete/{{d.id}}"> <h6 class=" text-start  m-0 d-inline   {% if d.completed == True %} text-muted strikeout {% endif %}     " style="width : 50%;">{{d.task}}</h6>
+                   </a> 
+                <div class="ml-auto">
+
+                    <a class="btn   btn-outline-primary border-0" href="update/{{d.id}}" role="button"><i class="bi bi-pen"></i></a> 
+                    <a class="btn    btn-outline-danger border-0" href="delete/{{d.id}}" role="button"><i class="bi bi-trash"></i></a>
+                        {% comment %} <p>{{d.completed}}</p> {% endcomment %}
+                </div>
+               
+            </div>
+                
+
+        {% endfor %}
+        
+        {% endif %}            
+
+
+          </div>
+
+
+
+      </div>
+     
+   
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<script>
+btn=document.getElementById("logoutbtn").onclick=logout;
+txt=document.getElementById("txt");
+
+setInterval(() => {
+    if(window.innerWidth < 600){
+        
+        txt.style.display="none";
+}
+    else{
+        txt.style.display="inline";
+    }
+},100)
+
+
+function logout(){
+    window.location.replace("/logout");
+}
+
+</script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
